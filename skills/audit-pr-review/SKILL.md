@@ -47,7 +47,8 @@ Flag each added or changed sentence that is verbose or redundant:
 - it restates standard Daml or Canton semantics or repository release policy;
 - outside `CHANGELOG.md`, it narrates the fix or the review: "now", "previously", "no longer", finding IDs such as `L-05`, issue or PR numbers;
 - it keeps its meaning with fewer words or without the sentence;
-- a doc comment covers more than its own symbol: it describes what callers do with the result, or carries a rule for a party other than the caller, such as the admin's automation. Move that rule to the package `README.md`, or delete it when the README already states it;
+- a doc comment covers more than its own symbol: it describes what callers do with the result, or carries a rule for a party other than the caller, such as the admin's automation. Move that rule to where `AGENTS.md` places operational assumptions;
+- a trust boundary, security limitation or operational assumption is stated twice, in a doc comment and a `README.md`. Keep one copy, where `AGENTS.md` places it;
 - it lists test names, outside a test comment that names the test covering the other half of a behavior;
 - it uses shorthand the reader has to decode ("skips the funding"), or packs more than one condition into a sentence;
 - a comment opens against the convention: a verb sentence for a function or choice that acts, "Implementation for `Allocation.allocation_cancelImpl`." for an interface method implementation, a noun phrase for a type, field, predicate, view, constant or module. Vendored text keeps its upstream wording;
