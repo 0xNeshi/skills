@@ -1,0 +1,19 @@
+{
+  "name": "0xneshi-skills",
+  "owner": {
+    "name": "0xNeshi",
+    "url": "https://github.com/0xNeshi"
+  },
+  "metadata": {
+    "description": "Claude Code skills for OpenZeppelin canton-contracts audit work."
+  },
+  "plugins": [
+    {
+      "name": "0xneshi",
+      "source": "./",
+      "description": "Turn OpenZeppelin audit findings into canton-contracts issues and review the pull requests that fix them.",
+      "category": "development",
+      "keywords": ["audit", "canton", "daml", "github", "code-review"]
+    }
+  ]
+}
