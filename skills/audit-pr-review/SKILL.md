@@ -42,7 +42,11 @@ Invoke the `canton-basic-review` skill in standalone mode on the Daml files the 
 Review the documentation and comments the PR adds or changes: Markdown files, `--` comments in `.daml` files, and comments in scripts and configuration. Review the added and changed lines and the paragraph each sits in.
 
 Flag each added or changed sentence that is verbose or redundant:
-- it repeats what the code, an identifier's name or a signature already says;
+- it repeats what the code, an identifier's name or a signature already says, or what follows from the next few lines (a `min` with the deadline already makes the deadline the result);
+- an inline comment exists only to say what the code does. Keep what the code cannot show: why it takes this approach over the obvious one, an outside constraint, or a pointer to where a limitation is explained. Delete the rest, or the whole comment;
+- a word restates what another word in the same sentence already means ("saturating at `maxTime` instead of overflowing");
+- it states a computed value as an offset event ("expires `maxTTL` after `requestedAt`") instead of naming the field and its value ("`expiresAt` is `requestedAt + maxTTL`");
+- it compares against "that", "this" or "it" standing for a value in another sentence ("a deadline later than that"). Name the bound, and write it the same way each time it appears;
 - it repeats a rule already stated in the same file, in another file the PR changes, or in a document it links to; keep one explanation and refer to it from elsewhere;
 - it restates standard Daml or Canton semantics or repository release policy;
 - outside `CHANGELOG.md`, it narrates the fix or the review: "now", "previously", "no longer", finding IDs such as `L-05`, issue or PR numbers;
@@ -54,7 +58,7 @@ Flag each added or changed sentence that is verbose or redundant:
 - a comment opens against the convention: a verb sentence for a function or choice that acts, "Implementation for `Allocation.allocation_cancelImpl`." for an interface method implementation, a noun phrase for a type, field, predicate, view, constant or module. Vendored text keeps its upstream wording;
 - it says code calls, matches or reproduces third-party code without a permalink to the exact lines at a pinned commit.
 
-For each, give the replacement text or "delete". A replacement keeps the text the same length or shorter unless it adds a missing fact. Give the net line change of each replacement.
+For each, give the replacement text or "delete". A replacement keeps the text the same length or shorter unless it adds a missing fact. Check every sentence of a replacement against the rules above, including sentences carried over unchanged from the original. Give the net line change of each replacement.
 
 ### Triage
 
@@ -97,6 +101,9 @@ Comments must read as if a person wrote them:
 - One idea per sentence, active voice, plain words. Name the exact file, choice, function or field.
 - Describe an action by what its caller writes and what it does to the contract: the field, choice or operation ("naming the holding in the `inputHoldingCids` of a new transfer or allocation, which consumes it through `fundHolding`"), not the internal step it reaches ("passing the holding to a factory as an input, which runs `fundHolding`").
 - A suggestion block is the final file text. After adding or moving a sentence in it, reread the whole block and replace every "there", "it", "this" or "one" that now follows a different noun with the name it stands for.
+- Every sentence in a suggestion block is yours, including text carried over from the original or taken from a subagent. Check each one against the documentation review rules.
+- A suggestion must not have the defect its comment names. Reread the comment's problem sentences, then check the suggestion against each one.
+- Write a bound or computed value as the expression the code computes (`requestedAt + maxTTL`), the same way each time.
 - Do not join two sentences with a colon or semicolon. Write two sentences.
 - No praise, no restating the finding, no summary, no hedging the facts don't need. Delete any sentence that loses nothing when removed.
 - Format code identifiers, files and paths with backticks.
