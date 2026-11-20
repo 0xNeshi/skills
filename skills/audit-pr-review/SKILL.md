@@ -78,17 +78,17 @@ Show me, in this order:
 
    ````markdown
    ### CR-1: <short title>
-   [<path>:<line>](<path>#L<line>) or [<path>:<start>-<end>](<path>#L<start>-L<end>) - in diff | outside diff
+   <location> - in diff | outside diff
 
    <comment text exactly as it will be posted>
    ````
 
-   Write the location as a markdown link to the local file, so I can click it to open the code: the link target is the path relative to the repository root, then `#L<line>` or `#L<start>-L<end>`. Do not wrap the link in backticks. These local links appear only in the draft. Posted comments are pinned to the remote file and line through the payload in step 4.
+   Write `<location>` as a clickable reference to the local file, in the format your environment's instructions give for referencing code, so I can click it to open the code in the IDE I am running you from. Use the path relative to the repository root. In the VS Code extension, that is a markdown link: `[<path>:<line>](<path>#L<line>)` or `[<path>:<start>-<end>](<path>#L<start>-L<end>)`. In a terminal, including one inside JetBrains or VS Code, it is the bare `<path>:<line>` or `<path>:<start>-<end>`, since the terminal opens that form and cannot open a relative markdown link target. When the instructions give no format, use the terminal form. Do not wrap the location in backticks. These local references appear only in the draft. Posted comments are pinned to the remote file and line through the payload in step 4.
 
    The comment text states the problem, then the change. Add a short code example only when the change is not obvious from the text: a few lines in a fenced block with a language tag (`daml`, `sh`, `markdown`). When the change replaces whole lines in the diff, such as shorter documentation text, use a GitHub suggestion block (```` ```suggestion ````) holding the replacement lines instead.
 
    Place each comment on the line where the change goes, using new-file line numbers at `headRefOid`. Prefer a line inside a diff hunk, added or context, on the right side; a multi-line range must stay in one hunk. When the change belongs outside the diff, such as a missing doc update in an unchanged file, mark it "outside diff".
-3. Covered elsewhere: one line each, `#<issue> (<finding id>): <problem> at [<path>:<line>](<path>#L<line>)`, with the same local link. Omit the section when empty.
+3. Covered elsewhere: one line each, `#<issue> (<finding id>): <problem> at <location>`, with `<location>` in the same format as above. Omit the section when empty.
 
 If there are no change requests, say so in one line and stop.
 
