@@ -8,13 +8,36 @@ Write a GitHub issue in markdown for this audit finding: $ARGUMENTS
 
 Split the title from the description, so I can copy each separately.
 
-Follow the format of https://github.com/OpenZeppelin/canton-contracts/issues/87
+Follow the format of https://github.com/OpenZeppelin/canton-contracts/issues/87. For every code change, add a Tests list under Changes: the new behavior and each case it must refuse.
 
-Link files through https://github.com/OpenZeppelin/canton-contracts/tree/1899f7a4326c9e1b6b76cb434e490e2e82331d9c
+Run `git fetch origin main` and take the commit SHA from `git rev-parse origin/main`. Read the code at that commit, not at the branch that is checked out, and link files through `https://github.com/OpenZeppelin/canton-contracts/tree/<sha>`.
 
-First check what the recommended fix involves in this codebase: who would witness the new actions, custom templates that reuse the code, registry policy it bypasses, and docs consumers rely on. Turn each complication or implication into a bullet under a Notes section.
+Keep it short: state what must hold after the fix and why, and leave the mechanism to the implementer. If the fix only works with one mechanism, name it and check it against the list below.
 
-Keep it short: say what needs to be done and why, not how to implement it.
+## Checking the facts and the fix
+
+The auditor reviews each issue as a fix plan. Check the draft the same way before showing it.
+
+Facts:
+- Confirm every statement about behavior in the code, not from the finding. Before writing "only X" or "no Y", list every choice that reaches the same state.
+- Read the open pull requests (`gh pr list --repo OpenZeppelin/canton-contracts`). Where one fixes another finding and changes code this issue relies on, describe the code as it will be once it merges.
+
+Scope:
+- Map each recommendation in the finding to a change. If the issue leaves one out or departs from it, give the reason in the platform response.
+- Apply the change everywhere the pattern lives, such as both transfers and allocations, and both the library templates and the custom example. A reason for leaving one out must hold for the approach this issue takes, not only for today's code.
+
+What must hold after the fix. State each as a requirement in the issue:
+- Caller inputs: when the fix reads a contract id, context entry or record from a choice argument, state whose authority it must carry, so that a look-alike created by another party, or by the admin alone, is refused.
+- Bounds: every time or amount bound that holds today still holds under hostile inputs, such as a backdated `requestedAt` or repeated settlements.
+- Overlapping roles: the fix works when one party holds two roles, such as the admin as an allocation's only executor.
+- Other paths: no public function, fallback or workaround that the issue proposes or leaves exported skips the checks the main path makes, such as the actor, deadline, expiry and pinning checks.
+
+What the documentation must say:
+- Workarounds: the authority or visibility each one grants beyond its purpose.
+- Canton mechanisms: the limit of each one the docs rely on, such as the command deduplication period, and what to do past it.
+- Consumer replacements: when consumers write their own template or choice in place of a library one, the checks it must keep and any choice it must add.
+
+Then check who would witness the new actions, custom templates that reuse the code, registry policy the fix bypasses, and docs consumers rely on. Turn each complication or implication into a bullet under a Notes section. A Note that names a bypass or a gap becomes a change, unless the Note says why the gap stays open.
 
 ## Writing
 
@@ -51,6 +74,10 @@ When this issue is blocked by another issue, write it for a developer who starts
 
 Put blocking relationships in `BLOCKED_BY` and `BLOCKS`, and tightly coupled issues in `RELATES_TO`; the script adds them as GitHub relationships. Do not mention related issues in the description. Outside the issue content, list each relationship with a one-line reason. If no issue qualifies, omit the relationships.
 
+## Review
+
+Before showing the draft, start a fresh agent. Give it the finding URL, the draft, the commit SHA and the list from "Checking the facts and the fix", and none of your reasoning. Ask it to check each statement in the draft against the code, check the draft against the list, and report what an auditor would flag. Fix what holds up.
+
 ## Creating the issue
 
 Show me the draft: title, description, type, labels, milestone, priority, effort and relationships. Wait for my approval.
@@ -62,7 +89,9 @@ Then copy `${CLAUDE_SKILL_DIR}/create-issue.sh` to the scratchpad directory, edi
 After the issue exists, file the client response on the finding with the OpenZeppelin Platform MCP tool `audit_issue_submit_response`:
 - `org_slug` and `issue_slug` come from the finding URL `https://audits.openzeppelin.com/<org_slug>/<audit slug>/issue/<issue_slug>`;
 - `proposedResolution`: `acknowledged_will_resolve`;
-- `message`: the new issue's URL in angle brackets, for example `<https://github.com/OpenZeppelin/canton-contracts/issues/101>`.
+- `message`: the new issue's URL in angle brackets, for example `<https://github.com/OpenZeppelin/canton-contracts/issues/101>`. When the issue departs from the finding's recommendation or leaves part of it out, put one or two sentences before the URL that say what the issue does instead and why.
+
+The message must agree with the issue: a count, name or scope it states is the issue's. When an existing issue is changed to cover this finding, the message says which of its changes addresses this finding. Then check the response on each finding that issue already covered, and include a resubmission in the draft for each one that no longer matches.
 
 Submitting overwrites any existing response. Check the finding with `audit_issue_get` first; if `hasClientResponse` is true, include the existing response in the draft so I can see what would be replaced.
 
