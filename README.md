@@ -7,15 +7,13 @@ A Claude Code plugin marketplace with skills for OpenZeppelin `canton-contracts`
 | Skill | Purpose |
 | --- | --- |
 | [`audit-issue`](skills/audit-issue/) | Drafts a GitHub issue in `OpenZeppelin/canton-contracts` for an audit finding, creates it with type, labels, milestone, priority, effort and relationships, and files the client response on the audit platform. |
-| [`audit-pr-review`](skills/audit-pr-review/) | Reviews a pull request that fixes an audit finding against its linked issues and findings, drafts change requests, and posts the approved ones as one review. |
 
 ## Requirements
 
-- Claude Code running in a clone of `OpenZeppelin/canton-contracts`. Both skills read the codebase, and `audit-pr-review` fetches the pull request head with `git`.
+- Claude Code running in a clone of `OpenZeppelin/canton-contracts`. The skill reads the codebase.
 - `gh`, logged in with write access to `OpenZeppelin/canton-contracts`.
 - `jq`, and GNU `grep` with the `en_US.UTF-8` locale. The bundled scripts use `grep -P`, which macOS `grep` lacks.
 - The OpenZeppelin Platform MCP connector, for `audit_get`, `audit_issue_get` and `audit_issue_submit_response`.
-- The `canton-basic-review` skill, for `audit-pr-review`.
 
 ## Install
 
@@ -55,7 +53,6 @@ Claude picks a skill when a request matches its description. To invoke one direc
 
 ```text
 /0xneshi:audit-issue https://audits.openzeppelin.com/<org>/<audit>/issue/<issue>
-/0xneshi:audit-pr-review 132
 ```
 
 ## Update

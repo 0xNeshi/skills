@@ -1,6 +1,6 @@
 {
   "name": "0xneshi",
-  "description": "Turn OpenZeppelin audit findings into canton-contracts issues and review the pull requests that fix them.",
+  "description": "Turn OpenZeppelin audit findings into canton-contracts issues.",
   "author": {
     "name": "0xNeshi",
     "url": "https://github.com/0xNeshi"

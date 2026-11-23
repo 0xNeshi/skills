@@ -11,9 +11,9 @@
     {
       "name": "0xneshi",
       "source": "./",
-      "description": "Turn OpenZeppelin audit findings into canton-contracts issues and review the pull requests that fix them.",
+      "description": "Turn OpenZeppelin audit findings into canton-contracts issues.",
       "category": "development",
-      "keywords": ["audit", "canton", "daml", "github", "code-review"]
+      "keywords": ["audit", "canton", "daml", "github"]
     }
   ]
 }
