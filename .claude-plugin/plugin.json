@@ -1,6 +1,6 @@
 {
   "name": "0xneshi",
-  "description": "Turn OpenZeppelin audit findings into canton-contracts issues.",
+  "description": "Skills for OpenZeppelin canton-contracts audit work: issues for findings and rebases of fix PRs.",
   "author": {
     "name": "0xNeshi",
     "url": "https://github.com/0xNeshi"

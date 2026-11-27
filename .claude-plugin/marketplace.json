@@ -11,7 +11,7 @@
     {
       "name": "0xneshi",
       "source": "./",
-      "description": "Turn OpenZeppelin audit findings into canton-contracts issues.",
+      "description": "Skills for OpenZeppelin canton-contracts audit work: issues for findings and rebases of fix PRs.",
       "category": "development",
       "keywords": ["audit", "canton", "daml", "github"]
     }
