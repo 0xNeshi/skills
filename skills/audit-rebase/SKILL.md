@@ -1,12 +1,14 @@
 ---
 name: audit-rebase
-description: Rebase an audit-fix pull request in OpenZeppelin/canton-contracts onto main. Finds the commits only the PR introduces, rebases them, resolves each conflict so the result satisfies the audit finding behind every side of it, and checks the PR's own text against findings fixed on main since it branched. Use when an audit PR is behind main, conflicts with it, or was stacked on PRs that have since been squash-merged.
+description: Prepare the rebase of an audit-fix pull request in OpenZeppelin/canton-contracts onto main. Finds the commits only the PR introduces and gives the reviewer the rebase command, then resolves each conflict so the result satisfies the audit finding behind every side of it, and checks the PR's own text against findings fixed on main since it branched. Use when an audit PR is behind main, conflicts with it, or was stacked on PRs that have since been squash-merged.
 argument-hint: <PR number or URL>
 ---
 
-Rebase this pull request onto `origin/main`: $ARGUMENTS
+Prepare the rebase of this pull request onto `origin/main`: $ARGUMENTS
 
 Work in a clone of `OpenZeppelin/canton-contracts`. Stop if the working tree has uncommitted changes. Run `git fetch origin`, and check out the PR's head branch if it is not checked out.
+
+Never commit, push, start or continue the rebase, or edit the PR. The reviewer does each of these. Leave your changes staged in the working tree, and write any PR or commit text as a draft in the report.
 
 ## 1. Find the PR's own commits
 
@@ -17,13 +19,13 @@ Audit PRs are often stacked on other audit PRs. Those merge into main by squash,
 3. The cutoff is the newest commit on the PR branch whose tree equals a commit on main. Confirm it with an empty `git diff --stat <cutoff> <squash commit>`. The PR's own commits are those after the cutoff.
 4. If no tree matches, the other PR changed after the branch merged it, or never merged. Compare with `git range-diff` and tell me which commits differ instead of choosing a cutoff.
 
-Show me the PR's own commits, each foreign commit with the PR and squash commit it went in as, and the command:
+Show me the PR's own commits, each foreign commit with the PR and squash commit it went in as, and the command for the reviewer to run:
 
 ```sh
 git rebase --onto origin/main <cutoff> <head branch>
 ```
 
-Wait for my approval, then run it.
+Wait until the reviewer says the rebase has started. If it stopped on conflicts, go on with step 2. If it finished without conflicts, go to step 4.
 
 ## 2. Trace each conflict to its findings
 
@@ -43,7 +45,7 @@ Run `git checkout --conflict=zdiff3 <file>` to see the base next to both sides. 
 - For each finding behind the hunk, confirm the result still says or does everything the issue asks for in that place, and that nothing in it contradicts another finding's change.
 - In code conflicts, apply the same checks to behavior, and keep the tests both sides added.
 
-Stage each resolved file. Do not run `git rebase --continue`.
+Stage each resolved file.
 
 ## 4. Check what merged without a conflict
 
@@ -69,9 +71,9 @@ For each conflict, report:
 - how you resolved it and why;
 - whether the result satisfies every finding involved, with the code fact that shows it.
 
-Then list each mismatch from step 4: file and line, the two findings, and the old and new wording. List the lines of the PR description and the commit messages that no longer match the rebased change, with the replacement text.
+Then list each mismatch from step 4: file and line, the two findings, and the old and new wording. List the lines of the PR description and the commit messages that no longer match the rebased change, with the replacement text for the reviewer to apply.
 
-Wait for my approval before `git rebase --continue`, `git push --force-with-lease`, or `gh pr edit`.
+End the report with the steps left to the reviewer: `git rebase --continue` while the rebase is in progress, amending a commit message, `git push --force-with-lease`, and editing the PR description. List only the steps that apply.
 
 ## Writing
 

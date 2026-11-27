@@ -7,7 +7,7 @@ A Claude Code plugin marketplace with skills for OpenZeppelin `canton-contracts`
 | Skill | Purpose |
 | --- | --- |
 | [`audit-issue`](skills/audit-issue/) | Drafts a GitHub issue in `OpenZeppelin/canton-contracts` for an audit finding, creates it with type, labels, milestone, priority, effort and relationships, and files the client response on the audit platform. |
-| [`audit-rebase`](skills/audit-rebase/) | Rebases an audit-fix pull request onto `main`: finds the commits only the PR introduces, resolves each conflict so it satisfies the audit finding behind every side, and checks the PR against findings fixed on `main` since it branched. |
+| [`audit-rebase`](skills/audit-rebase/) | Prepares the rebase of an audit-fix pull request onto `main`: finds the commits only the PR introduces, gives the reviewer the rebase command, resolves each conflict so it satisfies the audit finding behind every side, and checks the PR against findings fixed on `main` since it branched. It never commits or pushes. |
 
 ## Requirements
 
